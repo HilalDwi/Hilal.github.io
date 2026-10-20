@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detektif Cahaya — IPAS Kelas V</title>
+<style>
+:root{
+  --bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#667085;--line:#e4e7ec;
+  --primary:#4f46e5;--primary2:#7c3aed;--cyan:#06b6d4;--green:#16a34a;
+  --orange:#f59e0b;--red:#dc2626;--shadow:0 12px 35px rgba(20,28,55,.09);
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);background:linear-gradient(135deg,#f8faff,#f4f1ff 55%,#eefcff)}
+button,input,textarea{font:inherit} button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{width:270px;background:#10172b;color:#fff;padding:22px 16px;position:fixed;inset:0 auto 0 0;z-index:20;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:11px;padding:6px 9px 22px}.brand-icon{font-size:31px}.brand b{font-size:18px}.brand small{display:block;color:#aab4cc;margin-top:2px}
+.nav{display:grid;gap:6px;overflow:auto}.nav button{border:0;background:transparent;color:#c8d0e2;text-align:left;padding:11px 12px;border-radius:12px;display:flex;gap:10px;align-items:center}.nav button:hover,.nav button.active{background:#242e4c;color:#fff}.nav .done{color:#7ee2a2}
+.side-progress{margin-top:auto;padding:14px 10px;color:#b7c0d5;font-size:12px}.bar{height:8px;background:#29334e;border-radius:99px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#22d3ee,#8b5cf6);transition:.4s}
+.main{margin-left:270px;width:calc(100% - 270px);min-width:0}
+.top{position:sticky;top:0;z-index:10;background:rgba(245,247,251,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 28px;display:flex;align-items:center;justify-content:space-between}
+.mobile-menu{display:none;border:0;background:#fff;border-radius:10px;padding:8px 10px}.score-pill{background:#fff;border:1px solid var(--line);padding:8px 12px;border-radius:999px;font-weight:700}
+.content{max-width:1050px;margin:auto;padding:30px 24px 70px}.screen{display:none;animation:fade .35s ease}.screen.active{display:block}@keyframes fade{from{opacity:.2;transform:translateY(7px)}to{opacity:1;transform:none}}
+.hero{background:linear-gradient(120deg,#312e81,#6d28d9 55%,#0891b2);color:#fff;border-radius:26px;padding:34px;position:relative;overflow:hidden;box-shadow:var(--shadow)}.hero:after{content:"";position:absolute;width:250px;height:250px;border-radius:50%;right:-70px;top:-100px;background:rgba(255,255,255,.11)}.hero h1{font-size:clamp(30px,5vw,54px);line-height:1.02;margin:10px 0}
+.home-hero{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:20px;min-height:360px}
+.hero-copy{position:relative;z-index:2}.hero-mini{margin-top:18px;font-size:12px;font-weight:700;color:#e1e7ff}
+.hero-visual{height:280px;position:relative;border-radius:22px;background:linear-gradient(145deg,rgba(15,23,42,.36),rgba(255,255,255,.12));border:1px solid rgba(255,255,255,.22);overflow:hidden}
+.sun-orb{position:absolute;left:8%;top:12%;font-size:48px;filter:drop-shadow(0 0 15px #fde68a);animation:floaty 3s ease-in-out infinite}
+.light-beam{position:absolute;left:17%;top:29%;width:68%;height:5px;background:#fde68a;box-shadow:0 0 18px #fde68a;transform:rotate(19deg);transform-origin:left;border-radius:99px}
+.visual-tile{position:absolute;background:rgba(255,255,255,.94);color:#202747;border-radius:15px;padding:10px 12px;box-shadow:0 8px 22px rgba(0,0,0,.13);display:flex;align-items:center;gap:8px;font-size:12px}
+.visual-tile span{font-size:27px}.tile-mirror{top:14%;right:8%}.tile-water{top:47%;left:10%}.tile-car{right:8%;bottom:18%}
+.visual-label{position:absolute;left:10px;right:10px;bottom:8px;text-align:center;color:#fff;font-size:10px;font-weight:800;letter-spacing:.08em}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}.hero p{max-width:650px;color:#e7e8ff;font-size:17px}.eyebrow{font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:12px;color:#b8c0ff}
+.btn{border:0;border-radius:12px;padding:11px 16px;font-weight:750;transition:.18s}.btn:hover{transform:translateY(-1px)}.btn.primary{background:var(--primary);color:#fff}.hero .btn{background:#fff;color:#312e81}.btn.ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}.btn.success{background:#dcfce7;color:#166534}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}.card h3{margin:8px 0}.card p{color:var(--muted);line-height:1.6}.iconbox{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:#eef2ff;font-size:22px}
+.section-title{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:28px 0 15px}.section-title h2{margin:0;font-size:27px}.section-title p{margin:4px 0 0;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{padding:7px 10px;background:#f2f4f7;border-radius:999px;font-size:12px;font-weight:700}
+.callout{padding:15px 17px;border-radius:14px;background:#eff6ff;border-left:4px solid #3b82f6;margin:15px 0}.warn{background:#fffbeb;border-left-color:#f59e0b}.green{background:#f0fdf4;border-left-color:#22c55e}
+.activity{margin-top:18px}.choice-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}.choice{padding:13px;border:1px solid var(--line);border-radius:13px;background:#fff;text-align:left}.choice.selected{border-color:var(--primary);background:#eef2ff}.choice.correct{border-color:#22c55e;background:#f0fdf4}.choice.wrong{border-color:#ef4444;background:#fef2f2}
+.feedback{padding:12px 14px;border-radius:12px;margin-top:10px;display:none;line-height:1.5}.feedback.show{display:block}.feedback.ok{background:#ecfdf3;color:#166534}.feedback.no{background:#fff1f2;color:#9f1239}
+input[type=text],textarea,select{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px;background:#fff;outline:none}textarea{min-height:95px;resize:vertical}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.meter{height:12px;background:#e8ebf2;border-radius:99px;overflow:hidden}.meter i{display:block;height:100%;background:linear-gradient(90deg,#06b6d4,#7c3aed);width:0;transition:.5s}
+.light-lab{background:#101827;border-radius:18px;color:white;padding:22px;overflow:hidden}.lab-stage{height:230px;position:relative;border-radius:13px;background:radial-gradient(circle at 20% 50%,rgba(255,242,160,.2),transparent 16%),linear-gradient(90deg,#111827,#172033);overflow:hidden}.ray{position:absolute;height:5px;left:100px;right:130px;top:50%;background:#fde68a;box-shadow:0 0 16px #fde68a;transform-origin:left;transition:.5s}.ray:after{content:"";position:absolute;right:-2px;top:-5px;border-left:11px solid #fde68a;border-top:7px solid transparent;border-bottom:7px solid transparent}.lamp{position:absolute;left:28px;top:calc(50% - 23px);font-size:43px}.mirror{position:absolute;right:105px;top:35px;height:160px;width:10px;border-radius:8px;background:linear-gradient(90deg,#dbeafe,#fff,#94a3b8)}.target{position:absolute;right:22px;top:calc(50% - 22px);font-size:38px}.lab-controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.lab-controls .btn{background:#24304a;color:#fff;border:1px solid #3a4868}.lab-result{margin-top:13px;padding:12px;border-radius:12px;background:#182238;color:#dbe6ff}
+.mirror-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.mirror-card{background:#fff;border:2px solid var(--line);border-radius:15px;padding:16px;text-align:center;cursor:pointer}.mirror-card.active{border-color:var(--primary);background:#f5f3ff}.mirror-visual{height:70px;display:grid;place-items:center;font-size:48px}
+.dragzone{display:flex;gap:12px;flex-wrap:wrap}.dragitem{padding:12px 14px;background:#eef2ff;border:1px dashed #6366f1;border-radius:11px;cursor:grab}.dropzone{min-height:90px;border:2px dashed #cbd5e1;border-radius:14px;padding:12px;flex:1}.dropzone.over{background:#f0fdf4;border-color:#22c55e}
+.progress-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:18px}
+.match-list{display:grid;gap:11px;margin-top:14px}.match-row{display:grid;grid-template-columns:88px minmax(130px,1fr) minmax(190px,.9fr);align-items:center;gap:13px;border:1px solid var(--line);padding:12px;border-radius:14px;background:#fcfcff}
+.match-picture{min-height:68px;border-radius:11px;background:linear-gradient(135deg,#eef2ff,#ecfeff);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:25px}.mini-rays{font-size:12px;color:#4f46e5;font-weight:800}.match-desc small{display:block;color:var(--muted);margin-top:4px;line-height:1.4}.match-select{min-width:0}
+@media(max-width:650px){.match-row{grid-template-columns:72px 1fr}.match-select{grid-column:1/-1;width:100%}}.stat{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line)}
+.badge{width:150px;height:150px;margin:10px auto;border-radius:50%;display:grid;place-items:center;text-align:center;background:linear-gradient(135deg,#fbbf24,#f97316);box-shadow:0 12px 25px rgba(245,158,11,.25);font-size:48px}.certificate{border:8px double #c4b5fd;padding:28px;text-align:center;border-radius:18px;background:#fffdf7}.certificate h1{font-family:Georgia,serif;font-size:34px;color:#4c1d95}.certificate .name{font-size:25px;font-weight:800;border-bottom:1px solid #bbb;display:inline-block;padding:8px 25px;margin:10px}
+.footer-actions{display:flex;justify-content:space-between;gap:10px;margin-top:24px}
+.toast{position:fixed;right:20px;bottom:20px;background:#111827;color:#fff;padding:13px 16px;border-radius:12px;box-shadow:var(--shadow);transform:translateY(120px);transition:.3s;z-index:50}.toast.show{transform:none}
+@media(max-width:850px){.home-hero{grid-template-columns:1fr}.hero-visual{height:230px}.sidebar{transform:translateX(-100%);transition:.25s}.sidebar.open{transform:none}.main{margin-left:0;width:100%}.mobile-menu{display:block}.grid,.grid2,.progress-grid{grid-template-columns:1fr}.mirror-cards{grid-template-columns:1fr}.top{padding:10px 15px}.content{padding:20px 15px 55px}.hero{padding:25px}.choice-grid,.form-row{grid-template-columns:1fr}}
+@media print{.sidebar,.top,.no-print{display:none!important}.main{margin:0;width:100%}.screen{display:none!important}#screen-certificate{display:block!important}.certificate{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="brand-icon">🔦</div><div><b>Detektif Cahaya</b><small>IPAS • Kelas V</small></div></div>
+  <nav class="nav" id="nav"></nav>
+  <div class="side-progress">Progress belajar<div class="bar"><i id="sideBar"></i></div><div id="sidePct">0%</div></div>
+</aside>
+
+<main class="main">
+<header class="top">
+  <button class="mobile-menu" onclick="toggleMenu()">☰</button>
+  <div><b id="pageTitle">Beranda</b><div style="font-size:12px;color:var(--muted)">Misi: menemukan rahasia cahaya</div></div>
+  <div class="score-pill">⭐ <span id="score">0</span> poin</div>
+</header>
+
+<div class="content">
+
+<section class="screen active" id="screen-home">
+  <div class="hero home-hero">
+    <div class="hero-copy">
+      <div class="eyebrow">🔎 Misi IPAS Kelas V • ±30 menit</div>
+      <h1>Detektif<br>Cahaya!</h1>
+      <p>Cahaya punya banyak rahasia. Temukan mengapa sedotan terlihat bengkok di air, bagaimana cermin memantulkan wajah, dan mengapa spion kendaraan bisa melihat area lebih luas.</p>
+      <button class="btn" onclick="go('goals')">🚀 Mulai Petualangan</button>
+      <div class="hero-mini">👀 Amati • 🧠 Pecahkan teka-teki • 🏆 Raih badge</div>
+    </div>
+    <div class="hero-visual" aria-label="Ilustrasi cahaya dan cermin">
+      <div class="sun-orb">☀️</div><div class="light-beam"></div>
+      <div class="visual-tile tile-mirror"><span>🪞</span><b>Pemantulan</b></div>
+      <div class="visual-tile tile-water"><span>🥛〰️</span><b>Pembiasan</b></div>
+      <div class="visual-tile tile-car"><span>🚗</span><b>Cermin cembung</b></div>
+      <div class="visual-label">MISI: TEMUKAN RAHASIA CAHAYA ✨</div>
+    </div>
+  </div>
+  <div class="section-title"><div><h2>Petunjuk Misi</h2><p>Belajar dengan mengamati, memprediksi, mencoba, lalu menyimpulkan.</p></div></div>
+  <div class="grid">
+    <div class="card"><div class="iconbox">👀</div><h3>Amati</h3><p>Perhatikan fenomena sehari-hari sebelum membaca penjelasan.</p></div>
+    <div class="card"><div class="iconbox">🧠</div><h3>Prediksi</h3><p>Tulis jawabanmu sendiri. Tidak masalah jika belum tepat.</p></div>
+    <div class="card"><div class="iconbox">💡</div><h3>Buktikan</h3><p>Gunakan simulasi dan petunjuk untuk menemukan konsep.</p></div>
+  </div>
+  <div class="callout warn"><b>🎯 Tantangan utama:</b> Benarkah cahaya hanya digunakan untuk menerangi ruangan?</div>
+</section>
+
+<section class="screen" id="screen-goals">
+  <div class="section-title"><div><h2>🎯 Tujuan Pembelajaran</h2><p>Setelah menyelesaikan misi, kamu diharapkan mampu...</p></div></div>
+  <div class="grid2">
+    <div class="card"><h3>🔦 Sifat cahaya</h3><p>Mengidentifikasi cahaya yang merambat lurus, dapat dipantulkan, dapat dibiaskan, dan dapat menembus benda bening.</p></div>
+    <div class="card"><h3>🪞 Jenis cermin</h3><p>Mengidentifikasi cermin datar, cekung, dan cembung berdasarkan bentuk, sifat bayangan, dan penggunaannya.</p></div>
+    <div class="card"><h3>🌏 Hubungkan</h3><p>Menjelaskan hubungan sifat cahaya dengan benda atau teknologi dalam kehidupan sehari-hari.</p></div>
+    <div class="card"><h3>🧩 Pecahkan masalah</h3><p>Menggunakan bukti dari fenomena untuk memilih penjelasan yang paling masuk akal.</p></div>
+  </div>
+  <div class="callout green"><b>Mode belajar:</b> kamu yang berpikir dan menjawab. Guru mengendalikan aplikasi saat digunakan bersama kelas.</div>
+  <div class="footer-actions"><button class="btn ghost" onclick="go('home')">← Kembali</button><button class="btn primary" onclick="go('material')">Masuk Materi →</button></div>
+</section>
+
+<section class="screen" id="screen-material">
+  <div class="section-title"><div><h2>📖 Materi Interaktif</h2><p>Pilih kartu untuk melihat penjelasan singkat.</p></div></div>
+  <div class="grid">
+    <div class="card" onclick="reveal(this)"><div class="iconbox">➡️</div><h3>Merambat lurus</h3><p class="hidden">Cahaya bergerak mengikuti jalur lurus ketika melewati medium yang sama. Buktinya, cahaya senter tampak seperti garis saat diarahkan di tempat agak gelap. Jika tiga kartu berlubang disusun segaris, cahaya dapat melewati semua lubang; ketika satu kartu digeser, jalurnya terhalang.</p></div>
+    <div class="card" onclick="reveal(this)"><div class="iconbox">🪞</div><h3>Dipantulkan</h3><p class="hidden">Pemantulan terjadi ketika cahaya mengenai permukaan lalu kembali ke medium semula. Permukaan licin seperti cermin memantulkan cahaya dengan teratur sehingga bayangan terlihat jelas. Permukaan kasar juga memantulkan cahaya, tetapi ke banyak arah. Contoh: wajah terlihat di cermin dan cahaya senter memantul dari cermin.</p></div>
+    <div class="card" onclick="reveal(this)"><div class="iconbox">🪟</div><h3>Menembus benda bening</h3><p class="hidden">Cahaya dapat melewati benda bening, misalnya kaca jendela atau air jernih, sehingga benda di baliknya masih bisa terlihat. Benda translusen seperti kaca buram hanya meneruskan sebagian cahaya dan membuat objek tampak tidak jelas, sedangkan benda opak seperti kayu menghalangi cahaya.</p></div>
+    <div class="card" onclick="reveal(this)"><div class="iconbox">🥛</div><h3>Dibiaskan</h3><p class="hidden">Pembiasan adalah perubahan arah rambat cahaya saat berpindah dari satu medium ke medium lain, misalnya dari udara ke air, karena kecepatan cahaya berubah. Akibatnya, sedotan atau pensil di dalam gelas berisi air tampak bengkok, padahal benda itu tidak patah.</p></div>
+    <div class="card" onclick="reveal(this)"><div class="iconbox">⬜</div><h3>Cermin datar</h3><p class="hidden">Permukaannya rata. Bayangan umumnya tegak dan berukuran sama. Contoh: cermin di rumah.</p></div>
+    <div class="card" onclick="reveal(this)"><div class="iconbox">🥄</div><h3>Cermin cekung</h3><p class="hidden">Permukaan melengkung ke dalam. Dapat menghasilkan bayangan yang diperbesar pada kondisi tertentu. Dimanfaatkan pada reflektor lampu dan beberapa alat optik.</p></div>
+    <div class="card"><div class="iconbox">🚗</div><h3>Cermin cembung</h3><p>Permukaannya melengkung ke luar. Memberikan bidang pandang lebih luas, sehingga cocok untuk spion kendaraan.</p></div>
+  </div>
+  <div class="callout">💡 <b>Kunci berpikir:</b> jangan hanya menghafal nama. Tanyakan, <i>"Bukti apa yang membuatku memilih sifat atau cermin tersebut?"</i></div>
+  <div class="footer-actions"><button class="btn ghost" onclick="go('goals')">← Tujuan</button><button class="btn primary" onclick="go('explore')">Eksplorasi →</button></div>
+</section>
+
+<section class="screen" id="screen-explore">
+  <div class="section-title"><div><h2>🔍 Aktivitas Eksplorasi</h2><p>Amati fenomena, lalu pilih dugaanmu.</p></div></div>
+  <div class="card">
+    <h3>Kasus: "Pensil yang Terlihat Bengkok"</h3>
+    <div style="font-size:70px;text-align:center;padding:10px">🥛〰️✏️</div>
+    <p>Rani memasukkan pensil ke dalam gelas berisi air. Dari samping, pensil tampak seperti patah atau bengkok.</p>
+    <b>Apa penjelasan yang paling tepat?</b>
+    <div class="choice-grid" id="exploreChoices">
+      <button class="choice" onclick="answer('explore',0)">A. Pensil benar-benar berubah bentuk karena air.</button>
+      <button class="choice" onclick="answer('explore',1)">B. Cahaya berubah arah saat melewati udara dan air.</button>
+      <button class="choice" onclick="answer('explore',2)">C. Air menghasilkan cahaya baru yang membengkokkan pensil.</button>
+      <button class="choice" onclick="answer('explore',3)">D. Mata kita tidak dapat melihat benda di dalam air.</button>
+    </div>
+    <div class="feedback" id="exploreFeedback"></div>
+  </div>
+  <div class="card activity">
+    <h3>🪞 Pilih cermin yang tepat</h3><p>Klik cermin yang paling sesuai untuk <b>spion kendaraan</b>.</p>
+    <div class="mirror-cards">
+      <div class="mirror-card" onclick="mirrorAnswer(this,'datar')"><div class="mirror-visual">▯</div><b>Datar</b></div>
+      <div class="mirror-card" onclick="mirrorAnswer(this,'cekung')"><div class="mirror-visual">🥄</div><b>Cekung</b></div>
+      <div class="mirror-card" onclick="mirrorAnswer(this,'cembung')"><div class="mirror-visual">🚗</div><b>Cembung</b></div>
+    </div>
+    <div class="feedback" id="mirrorFeedback"></div>
+  </div>
+  <div class="footer-actions"><button class="btn ghost" onclick="go('material')">← Materi</button><button class="btn primary" onclick="go('lab')">Laboratorium →</button></div>
+</section>
+
+<section class="screen" id="screen-lab">
+  <div class="section-title"><div><h2>🧪 Laboratorium Maya</h2><p>Ubah posisi cermin dan amati arah sinar.</p></div></div>
+  <div class="light-lab">
+    <div class="lab-stage">
+      <div class="lamp">🔦</div><div class="ray" id="ray"></div><div class="mirror" id="mirror"></div><div class="target">🎯</div>
+    </div>
+    <div class="lab-controls">
+      <button class="btn" onclick="labTry('lurus')">Sinar lurus</button>
+      <button class="btn" onclick="labTry('pantul')">Arahkan ke cermin</button>
+      <button class="btn" onclick="labTry('geser')">Geser cermin</button>
+      <button class="btn" onclick="labTry('reset')">Reset</button>
+    </div>
+    <div class="lab-result" id="labResult">🔬 Mulai dengan <b>Sinar lurus</b>, lalu coba <b>Arahkan ke cermin</b>. Amati perubahan arah sinar.</div>
+  </div>
+  <div class="grid2" style="margin-top:16px">
+    <div class="card"><h3>Catatan ilmuwan kecil 📝</h3><p>Apa yang berubah ketika sinar mengenai cermin?</p><textarea id="labNote" placeholder="Tulis pengamatanmu..."></textarea></div>
+    <div class="card"><h3>Kesimpulan</h3><p>Lengkapi kalimat:</p><input id="labFill" type="text" placeholder="Cahaya dapat ..."><button class="btn primary" style="margin-top:10px" onclick="checkLab()">Periksa</button><div class="feedback" id="labFeedback"></div></div>
+  </div>
+  <div class="footer-actions"><button class="btn ghost" onclick="go('explore')">← Eksplorasi</button><button class="btn primary" onclick="go('game')">Mini Game →</button></div>
+</section>
+
+<section class="screen" id="screen-game">
+  <div class="section-title"><div><h2>🎮 Mini Game: Siapa Aku?</h2><p>Identifikasi sifat cahaya dari petunjuk.</p></div><span class="chip" id="gameCounter">1 / 4</span></div>
+  <div class="card">
+    <div class="callout" id="gameClue"></div>
+    <div class="choice-grid" id="gameChoices"></div>
+    <div class="feedback" id="gameFeedback"></div>
+    <button class="btn primary" id="gameNext" onclick="nextGame()" disabled>Berikutnya →</button>
+  </div>
+  <div class="footer-actions"><button class="btn ghost" onclick="go('lab')">← Lab</button><button class="btn primary" onclick="go('worksheet')">LKPD →</button></div>
+</section>
+
+<section class="screen" id="screen-worksheet">
+  <div class="section-title"><div><h2>📝 Lembar Kerja Interaktif</h2><p>Gunakan bukti, bukan tebakan.</p></div></div>
+  <div class="card">
+    <h3>Bagian A — Jodohkan ilustrasi dengan konsep</h3>
+    <p>Amati ilustrasi dan petunjuk pada setiap kartu fenomena, lalu pilih konsep cahaya yang sesuai.</p>
+    <div class="match-list">
+      <div class="match-row"><div class="match-picture"><span>🔦</span><div class="mini-rays">╱ ─ ─ ➜</div></div><div class="match-desc"><b>1. Berkas cahaya senter</b><small>Sinar tampak bergerak pada jalur lurus.</small></div><select class="match-select" data-correct="lurus"><option value="">Pilih konsep...</option><option value="lurus">Merambat lurus</option><option value="pantul">Dipantulkan</option><option value="bias">Dibiaskan</option><option value="tembus">Menembus benda bening</option></select></div>
+      <div class="match-row"><div class="match-picture"><span>🪞</span><div class="mini-rays">↗️ ✨ ↘️</div></div><div class="match-desc"><b>2. Wajah di cermin</b><small>Cahaya kembali dari permukaan cermin ke mata.</small></div><select class="match-select" data-correct="pantul"><option value="">Pilih konsep...</option><option value="lurus">Merambat lurus</option><option value="pantul">Dipantulkan</option><option value="bias">Dibiaskan</option><option value="tembus">Menembus benda bening</option></select></div>
+      <div class="match-row"><div class="match-picture"><span>🥛✏️</span><div class="mini-rays">〰️</div></div><div class="match-desc"><b>3. Pensil dalam air</b><small>Pensil tampak bengkok saat dilihat dari samping.</small></div><select class="match-select" data-correct="bias"><option value="">Pilih konsep...</option><option value="lurus">Merambat lurus</option><option value="pantul">Dipantulkan</option><option value="bias">Dibiaskan</option><option value="tembus">Menembus benda bening</option></select></div>
+      <div class="match-row"><div class="match-picture"><span>🪟☀️</span><div class="mini-rays">☀️ ➜ 🪟</div></div><div class="match-desc"><b>4. Cahaya melewati kaca</b><small>Cahaya matahari masuk melalui jendela bening.</small></div><select class="match-select" data-correct="tembus"><option value="">Pilih konsep...</option><option value="lurus">Merambat lurus</option><option value="pantul">Dipantulkan</option><option value="bias">Dibiaskan</option><option value="tembus">Menembus benda bening</option></select></div>
+    </div>
+    <button class="btn primary" style="margin-top:14px" onclick="checkMatching()">Periksa Pasangan</button><div class="feedback" id="dragFeedback"></div>
+  </div>
+  <div class="card activity">
+    <h3>Bagian B — Berpikir seperti perancang</h3>
+    <p>Sebuah toko ingin memasang cermin di sudut agar pengunjung dapat melihat area yang lebih luas. Cermin apa yang kamu sarankan? Jelaskan alasannya.</p>
+    <select id="caseAnswer"><option value="">Pilih jawaban...</option><option value="datar">Cermin datar</option><option value="cekung">Cermin cekung</option><option value="cembung">Cermin cembung</option></select>
+    <textarea id="caseReason" placeholder="Alasanmu..." style="margin-top:10px"></textarea>
+    <button class="btn primary" style="margin-top:10px" onclick="checkCase()">Kirim jawaban</button>
+    <div class="feedback" id="caseFeedback"></div>
+  </div>
+  <div class="footer-actions"><button class="btn ghost" onclick="go('game')">← Game</button><button class="btn primary" onclick="go('quiz')">Kuis HOTS →</button></div>
+</section>
+
+<section class="screen" id="screen-quiz">
+  <div class="section-title"><div><h2>🧩 Kuis HOTS</h2><p>Analisis situasi. Pilih jawaban paling masuk akal.</p></div><span class="chip" id="quizCounter">1 / 5</span></div>
+  <div class="card">
+    <h3 id="quizQuestion"></h3><div class="choice-grid" id="quizChoices"></div><div class="feedback" id="quizFeedback"></div>
+    <button class="btn primary" id="quizNext" onclick="nextQuiz()" disabled>Berikutnya →</button>
+  </div>
+</section>
+
+<section class="screen" id="screen-progress">
+  <div class="section-title"><div><h2>📊 Progress Belajar</h2><p>Lihat perjalananmu sebagai detektif cahaya.</p></div></div>
+  <div class="progress-grid">
+    <div class="card"><h3>Perjalanan misi</h3><div class="meter"><i id="bigBar"></i></div><p id="bigPct">0% selesai</p><div id="stats"></div></div>
+    <div class="card" style="text-align:center"><div class="badge">🔦<small style="font-size:12px">DETEKTIF<br>CAHAYA</small></div><h3 id="badgeText">Belum terbuka</h3><p>Selesaikan seluruh aktivitas untuk membuka penghargaan.</p></div>
+  </div>
+  <div class="callout green"><b>Tips:</b> jika ada jawaban yang salah, kembali ke materi dan cari bukti yang mendukung jawabanmu.</div>
+  <div class="footer-actions"><button class="btn ghost" onclick="go('quiz')">← Kuis</button><button class="btn primary" onclick="go('reflection')">Refleksi →</button></div>
+</section>
+
+<section class="screen" id="screen-reflection">
+  <div class="section-title"><div><h2>💡 Refleksi</h2><p>Berhenti sejenak. Apa yang berubah dari cara berpikirmu?</p></div></div>
+  <div class="card">
+    <h3>1. Sebelum belajar, saya mengira cahaya...</h3><textarea id="ref1"></textarea>
+    <h3>2. Sekarang saya memahami bahwa cahaya...</h3><textarea id="ref2"></textarea>
+    <h3>3. Contoh pemanfaatan cahaya/cermin yang baru saya sadari...</h3><textarea id="ref3"></textarea>
+    <button class="btn primary" onclick="saveReflection()">Simpan refleksi</button><div class="feedback" id="reflectionFeedback"></div>
+  </div>
+  <div class="footer-actions"><button class="btn ghost" onclick="go('progress')">← Progress</button><button class="btn primary" onclick="finish()">Selesaikan Misi 🏆</button></div>
+</section>
+
+<section class="screen" id="screen-certificate">
+  <div class="section-title"><div><h2>🏆 Badge & Sertifikat</h2><p>Apresiasi untuk perjalanan belajarmu.</p></div></div>
+  <div class="card certificate">
+    <div style="font-size:46px">🔦✨</div><div class="eyebrow" style="color:#7c3aed">PENGHARGAAN PEMBELAJARAN</div>
+    <h1>Sertifikat Detektif Cahaya</h1>
+    <p>Diberikan kepada</p>
+    <input id="studentName" class="name" placeholder="Tuliskan namamu" style="text-align:center;max-width:320px">
+    <p>karena telah menyelesaikan misi IPAS Kelas V tentang <b>Sifat Cahaya dan Jenis Cermin</b>.</p>
+    <h2 id="finalScore">⭐ 0 poin</h2><p id="finalBadge">🔦 Detektif Cahaya</p>
+    <button class="btn primary no-print" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+    <button class="btn ghost no-print" onclick="go('home')" style="margin-left:6px">Kembali ke Beranda</button>
+  </div>
+</section>
+
+</div>
+</main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const sections=[
+ ['home','🏠','Beranda'],['goals','🎯','Tujuan Pembelajaran'],['material','📖','Materi Interaktif'],
+ ['explore','🔍','Aktivitas Eksplorasi'],['lab','🧪','Laboratorium Maya'],['game','🎮','Mini Game Edukatif'],
+ ['worksheet','📝','Lembar Kerja Interaktif'],['quiz','🧩','Kuis HOTS'],['progress','📊','Progress Belajar'],
+ ['reflection','💡','Refleksi'],['certificate','🏆','Badge & Sertifikat']
+];
+let score=0, completed=new Set(['home']), current='home';
+const nav=document.getElementById('nav');
+sections.forEach(s=>{let b=document.createElement('button');b.innerHTML=`<span>${s[1]}</span>${s[2]}`;b.onclick=()=>go(s[0]);b.id='nav-'+s[0];nav.appendChild(b)});
+function go(id){
+ document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+ document.getElementById('screen-'+id).classList.add('active');
+ current=id; completed.add(id);
+ document.getElementById('pageTitle').textContent=sections.find(s=>s[0]===id)[2];
+ document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));
+ document.getElementById('nav-'+id).classList.add('active');
+ document.getElementById('sidebar').classList.remove('open');
+ updateProgress();
+ window.scrollTo({top:0,behavior:'smooth'});
+ if(id==='game') initGame(); if(id==='quiz') initQuiz(); if(id==='progress') renderStats();
+}
+function updateProgress(){
+ let pct=Math.round((completed.size/sections.length)*100);
+ document.getElementById('sideBar').style.width=pct+'%';document.getElementById('sidePct').textContent=pct+'%';
+ document.getElementById('bigBar').style.width=pct+'%';document.getElementById('bigPct').textContent=pct+'% selesai';
+ document.getElementById('score').textContent=score;
+ sections.forEach(s=>{let b=document.getElementById('nav-'+s[0]);b.classList.toggle('done',completed.has(s[0]))});
+}
+function addScore(n){score+=n;updateProgress();toast('+'+n+' poin! 🌟')}
+function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1600)}
+function toggleMenu(){document.getElementById('sidebar').classList.toggle('open')}
+function reveal(el){let p=el.querySelector('p');p.classList.toggle('hidden');p.style.display=p.classList.contains('hidden')?'none':'block';if(!p.classList.contains('hidden')) addScore(1)}
+document.querySelectorAll('.card p.hidden').forEach(p=>p.style.display='none');
+
+function answer(type,i){
+ if(type==='explore'){
+  let btns=document.querySelectorAll('#exploreChoices .choice');btns.forEach(b=>b.classList.remove('selected','correct','wrong'));btns[i].classList.add(i===1?'correct':'wrong');
+  let f=document.getElementById('exploreFeedback');f.className='feedback show '+(i===1?'ok':'no');f.innerHTML=i===1?'✅ Tepat. Cahaya mengalami pembiasan ketika berpindah dari satu medium ke medium lain.':'💭 Belum tepat. Perhatikan bahwa yang berubah adalah arah cahaya, bukan bentuk pensil.';
+  if(i===1&&!completed.has('exploreQ')){addScore(5);completed.add('exploreQ')}
+ }
+}
+function mirrorAnswer(el,v){document.querySelectorAll('.mirror-card').forEach(x=>x.classList.remove('active'));el.classList.add('active');let f=document.getElementById('mirrorFeedback');f.className='feedback show '+(v==='cembung'?'ok':'no');f.innerHTML=v==='cembung'?'✅ Tepat. Cermin cembung memberi bidang pandang lebih luas, cocok untuk spion.':'💭 Coba lagi. Spion membutuhkan bidang pandang yang luas.';if(v==='cembung'&&!completed.has('mirrorQ')){addScore(5);completed.add('mirrorQ')}}
+
+function labTry(action){
+ let ray=document.getElementById('ray'), mirror=document.getElementById('mirror'), r=document.getElementById('labResult');
+ if(action==='lurus'){ray.style.transform='rotate(0deg)';r.innerHTML='➡️ Sinar bergerak pada jalur lurus. Ini menunjukkan <b>cahaya merambat lurus</b>.'}
+ if(action==='pantul'){ray.style.transform='rotate(-25deg)';r.innerHTML='🪞 Sinar mengenai cermin lalu berubah arah. Ini menunjukkan <b>pemantulan cahaya</b>.';if(!completed.has('labTry')){addScore(5);completed.add('labTry')}}
+ if(action==='geser'){mirror.style.right='170px';r.innerHTML='🔎 Saat posisi cermin berubah, titik pertemuan sinar juga dapat berubah. Dalam eksperimen nyata, posisi dan sudut memengaruhi arah pantulan.'}
+ if(action==='reset'){mirror.style.right='105px';ray.style.transform='rotate(0deg)';r.textContent='🔬 Simulasi direset. Coba lagi.'}
+}
+function checkLab(){let v=document.getElementById('labFill').value.toLowerCase();let f=document.getElementById('labFeedback');let ok=v.includes('pantul')||v.includes('merambat');f.className='feedback show '+(ok?'ok':'no');f.textContent=ok?'✅ Jawabanmu menunjukkan pemahaman yang tepat.':'💡 Gunakan kata kunci dari percobaan: cahaya dapat merambat lurus atau dipantulkan.';if(ok&&!completed.has('labFill')){addScore(5);completed.add('labFill')}}
+
+const games=[
+ ['Aku tampak seperti garis lurus dari senter di tempat gelap.','Merambat lurus','Dipantulkan','Dibiaskan',0],
+ ['Aku membuat wajahmu dapat terlihat di cermin.','Menembus benda','Dipantulkan','Dibiaskan',1],
+ ['Aku membuat sedotan dalam air tampak bengkok.','Merambat lurus','Dipantulkan','Dibiaskan',2],
+ ['Aku dapat melewati kaca jendela.','Menembus benda bening','Dipantulkan','Dibiaskan',0]
+];let gi=0,gLocked=false,gameStarted=false;
+function initGame(){if(!gameStarted){gi=0;gLocked=false;gameStarted=true;renderGame()}}
+function renderGame(){let q=games[gi];document.getElementById('gameCounter').textContent=`${gi+1} / ${games.length}`;document.getElementById('gameClue').innerHTML='<b>Petunjuk:</b> '+q[0];let c=document.getElementById('gameChoices');c.innerHTML='';q.slice(1,4).forEach((x,i)=>{let b=document.createElement('button');b.className='choice';b.textContent=x;b.onclick=()=>gameAnswer(i);c.appendChild(b)});document.getElementById('gameFeedback').className='feedback';document.getElementById('gameNext').disabled=true;document.getElementById('gameNext').textContent=gi===games.length-1?'Selesai →':'Berikutnya →'}
+function gameAnswer(i){if(gLocked)return;gLocked=true;let q=games[gi],bs=document.querySelectorAll('#gameChoices .choice');bs.forEach((b,j)=>b.classList.add(j===q[4]?'correct':j===i?'wrong':''));let f=document.getElementById('gameFeedback');let ok=i===q[4];f.className='feedback show '+(ok?'ok':'no');f.innerHTML=ok?'✅ Benar! Kamu menemukan petunjuknya.':'💭 Belum tepat. Baca kembali petunjuk dan pikirkan fenomenanya.';if(ok)addScore(4);document.getElementById('gameNext').disabled=false}
+function nextGame(){if(!gLocked){toast('Pilih jawaban terlebih dahulu 😊');return} if(gi<games.length-1){gi++;gLocked=false;renderGame()}else{completed.add('gameDone');go('worksheet')}}
+
+let dragged=null;
+document.querySelectorAll('.dragitem').forEach(x=>{x.addEventListener('dragstart',()=>dragged=x);x.addEventListener('dragend',()=>dragged=null)});
+document.querySelectorAll('.dropzone').forEach(z=>{z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('over')});z.addEventListener('dragleave',()=>z.classList.remove('over'));z.addEventListener('drop',e=>{e.preventDefault();z.classList.remove('over');if(dragged)z.appendChild(dragged)})});
+function checkMatching(){let sels=[...document.querySelectorAll('.match-select')];let ok=sels.every(s=>s.value===s.dataset.correct);let f=document.getElementById('dragFeedback');f.className='feedback show '+(ok?'ok':'no');f.textContent=ok?'✅ Semua pasangan tepat! Kamu berhasil menghubungkan ilustrasi dengan sifat cahaya.':'💡 Ada pasangan yang belum tepat. Baca petunjuk pada setiap ilustrasi lalu coba lagi.';sels.forEach(s=>s.style.borderColor=s.value===''?'#cbd5e1':(s.value===s.dataset.correct?'#22c55e':'#ef4444'));if(ok&&!completed.has('dragDone')){addScore(8);completed.add('dragDone')}}
+
+function checkCase(){let v=document.getElementById('caseAnswer').value,reason=document.getElementById('caseReason').value.trim();let f=document.getElementById('caseFeedback');let ok=v==='cembung'&&reason.length>8;f.className='feedback show '+(ok?'ok':'no');f.innerHTML=ok?'✅ Jawaban kuat. Cermin cembung memberikan bidang pandang lebih luas.':'💡 Pilih cermin cembung dan jelaskan kaitannya dengan bidang pandang yang lebih luas.';if(ok&&!completed.has('caseDone')){addScore(8);completed.add('caseDone')}}
+
+const quizzes=[
+ ['Kamu ingin melihat area jalan yang lebih luas melalui spion. Cermin mana yang paling tepat dan mengapa?',['Datar, karena bayangan selalu sama ukuran.','Cekung, karena mengumpulkan cahaya.','Cembung, karena bidang pandangnya lebih luas.','Datar, karena tidak mengubah arah cahaya.'],2],
+ ['Sebuah senter diarahkan ke tiga kartu berlubang yang sejajar. Cahaya terlihat di belakang kartu. Kesimpulan terbaik adalah...',['Cahaya merambat lurus.','Cahaya selalu dibiaskan.','Kartu menghasilkan cahaya.','Cahaya tidak dapat bergerak.'],0],
+ ['Dua siswa melihat sendok dalam gelas air dari samping. Mereka berbeda pendapat: satu berkata sendok patah, satu berkata cahaya berubah arah. Siapa yang lebih tepat?',['Siswa pertama, karena air merusak sendok.','Siswa kedua, karena terjadi pembiasan cahaya.','Keduanya salah.','Keduanya benar karena sendok berubah bentuk.'],1],
+ ['Kelasmu ingin membuat ruangan lebih terang tanpa menambah lampu. Benda apa yang paling masuk akal digunakan untuk membantu memantulkan cahaya?',['Cermin.','Kain tebal.','Kardus tertutup.','Busa hitam.'],0],
+ ['Mengapa kaca jendela dapat membantu cahaya matahari masuk ke kelas, sedangkan papan kayu tidak?',['Kaca bening dapat ditembus cahaya.','Kayu menghasilkan cahaya.','Kaca memantulkan semua cahaya.','Kayu membiaskan semua cahaya.'],0]
+];let qi=0,qLocked=false;
+function initQuiz(){qi=0;qLocked=false;renderQuiz()}
+function renderQuiz(){let q=quizzes[qi];document.getElementById('quizCounter').textContent=`${qi+1} / ${quizzes.length}`;document.getElementById('quizQuestion').textContent=q[0];let c=document.getElementById('quizChoices');c.innerHTML='';q[1].forEach((x,i)=>{let b=document.createElement('button');b.className='choice';b.textContent=String.fromCharCode(65+i)+'. '+x;b.onclick=()=>quizAnswer(i);c.appendChild(b)});document.getElementById('quizFeedback').className='feedback';document.getElementById('quizNext').disabled=true;document.getElementById('quizNext').textContent=qi===quizzes.length-1?'Lihat Hasil →':'Berikutnya →'}
+function quizAnswer(i){if(qLocked)return;qLocked=true;let q=quizzes[qi],bs=document.querySelectorAll('#quizChoices .choice');bs.forEach((b,j)=>b.classList.add(j===q[2]?'correct':j===i?'wrong':''));let ok=i===q[2],f=document.getElementById('quizFeedback');f.className='feedback show '+(ok?'ok':'no');f.innerHTML=ok?'✅ Tepat. Kamu memilih berdasarkan alasan yang sesuai dengan konsep cahaya.':'💭 Belum tepat. Cari kata kunci pada situasi: bidang pandang, arah cahaya, atau benda yang dapat ditembus.';if(ok)addScore(6);document.getElementById('quizNext').disabled=false}
+function nextQuiz(){if(qi<quizzes.length-1){qi++;qLocked=false;renderQuiz()}else{completed.add('quizDone');go('progress')}}
+function renderStats(){document.getElementById('stats').innerHTML=`<div class="stat"><span>⭐ Poin</span><b>${score}</b></div><div class="stat"><span>✅ Bagian dibuka</span><b>${completed.size}</b></div><div class="stat"><span>🎮 Game</span><b>${completed.has('gameDone')?'Selesai':'Belum'}</b></div><div class="stat"><span>🧩 Kuis</span><b>${completed.has('quizDone')?'Selesai':'Belum'}</b></div>`;document.getElementById('badgeText').textContent=completed.has('quizDone')?'Detektif Cahaya Aktif! 🔦':'Belum terbuka'}
+function saveReflection(){let vals=['ref1','ref2','ref3'].map(id=>document.getElementById(id).value.trim());let f=document.getElementById('reflectionFeedback');let ok=vals.every(x=>x.length>5);f.className='feedback show '+(ok?'ok':'no');f.textContent=ok?'🌟 Refleksimu tersimpan. Kamu sudah menghubungkan pembelajaran dengan pengalamanmu.':'✍️ Lengkapi ketiga refleksi dengan jawabanmu sendiri.';if(ok){completed.add('reflectionDone');addScore(10)}}
+function finish(){let vals=['ref1','ref2','ref3'].map(id=>document.getElementById(id).value.trim());if(vals.every(x=>x.length>5)&&completed.has('quizDone')){completed.add('finish');document.getElementById('finalScore').textContent='⭐ '+score+' poin';document.getElementById('finalBadge').textContent=score>=45?'🏆 Detektif Cahaya Ahli':'🔦 Detektif Cahaya';go('certificate')}else{toast('Selesaikan kuis dan refleksi terlebih dahulu 😊');go('reflection')}}
+document.getElementById('studentName').addEventListener('input',e=>{localStorage.setItem('detektifNama',e.target.value)});
+const saved=localStorage.getItem('detektifNama');if(saved)document.getElementById('studentName').value=saved;
+updateProgress();
+</script>
+</body>
+</html>
